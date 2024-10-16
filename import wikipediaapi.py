@@ -1,6 +1,6 @@
 import wikipediaapi
 import time
-import queue as Queue
+from queue import Queue
 
 user_agent="Noah's Wiki Finder (noahhagiwara01@gmail.com)"
 wiki=wikipediaapi.Wikipedia(user_agent,"en")
@@ -20,6 +20,9 @@ def wikipedia_solver(star_page, target_page):
     queue=Queue()
     parent={}
 
+    queue.put(start_page.title)
+    visited.add(start_page.title)
+
     while not queue.empty():
         #get next otem in our queue
         current_page_title=queue.get()
@@ -38,7 +41,7 @@ def wikipedia_solver(star_page, target_page):
                 parent[link]=current_page_title
     path=[]
     page_title=target_page.title
-    while page_title != start_page.page_title:
+    while page_title != start_page.title:
         path.append(page_title)
         page_title = parent[page_title]
 
@@ -46,12 +49,12 @@ def wikipedia_solver(star_page, target_page):
     path.reverse()
 
     end_time=time.time()
-    print("you wasted,", endtime-start_time, "seconds of my time!!!")
+    print("you wasted,", end_time-start_time, "seconds of my time!!!")
     return path
 
 #creating start and target pages
-start_page=wiki.page("Monkey D. Luffy")
-target_page=wiki.page("Fukushima nuclear accident")
+start_page=wiki.page("Pasadena High School (California)")
+target_page=wiki.page("World War II")
 path=wikipedia_solver(start_page, target_page)
 
 print(path)
